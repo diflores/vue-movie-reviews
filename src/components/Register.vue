@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <h4>Register</h4>
-    <form @submit.prevent="register">
+  <!-- <form @submit.prevent="register">
       <label for="first-name">First Name</label>
       <div>
         <input id="first-name" type="text" v-model="first_name" required autofocus />
       </div>
-      <label for="last-name">First Name</label>
+      <label for="last-name">Last Name</label>
       <div>
         <input id="last-name" type="text" v-model="last_name" required autofocus />
       </div>
@@ -26,8 +24,30 @@
 
       <div>
         <button type="submit">Register</button>
-      </div>
-    </form>
+  </div>-->
+  <!-- </form> -->
+  <div id="register-container">
+    <section id="register-section">
+      <h1 id="register-title">Register</h1>
+      <form id="register-form" @submit.prevent="register">
+        <b-field label="First name">
+          <b-input type="text" class="register-input" v-model="first_name" required></b-input>
+        </b-field>
+        <b-field label="Last name">
+          <b-input type="text" class="register-input" v-model="last_name" required></b-input>
+        </b-field>
+        <b-field label="Email">
+          <b-input type="email" class="register-input" v-model="email" required></b-input>
+        </b-field>
+        <b-field label="Password">
+          <b-input type="password" class="register-input" v-model="password" required></b-input>
+        </b-field>
+        <b-field label="Confirm password">
+          <b-input type="password" class="register-input" v-model="password_confirmation" required></b-input>
+        </b-field>
+        <b-button class="button is-primary" native-type="submit">Register</b-button>
+      </form>
+    </section>
   </div>
 </template>
 <script>
@@ -59,3 +79,32 @@ export default {
   }
 };
 </script>
+<style>
+#register-container {
+  background-color: #714dd2;
+  padding-top: 5em;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+}
+#register-section {
+  width: 35em;
+  background-color: #ffffff;
+  height: 80vh;
+}
+#register-title {
+  text-align: center;
+  font-size: 2em;
+  padding-top: 1em;
+}
+#register-form {
+  margin: 0 auto;
+  width: 65%;
+  padding-top: 2em;
+}
+.register-input {
+  background-color: #e5e8ed !important;
+}
+</style>
