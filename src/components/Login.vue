@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <section>
+      <h1 class="login-title">Login</h1>
       <form @submit.prevent="login">
-        <h1>Login</h1>
         <b-field label="Email">
           <b-input class="login-input" type="email" v-model="email"></b-input>
         </b-field>
@@ -37,20 +37,29 @@ export default {
 </script>
 <style>
 body {
-  background-color: #6a62d2;
+  background-color: #714dd2;
+  height: 100%;
 }
 .container {
-  align-items: center;
+  padding-top: 10em;
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
 section {
-  height: auto;
-  margin: 0 auto;
-  width: 30em;
+  width: 35em;
   background-color: #ffffff;
+  height: 25em;
+}
+.login-title {
+  text-align: center;
+  font-size: 2em;
+  padding-top: 1em;
 }
 form {
-  width: 50%;
   margin: 0 auto;
+  width: 65%;
+  padding-top: 2em;
 }
 .input {
   background-color: #e5e8ed !important;
