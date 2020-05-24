@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="login-container">
     <section>
       <h1 class="login-title">Login</h1>
       <form @submit.prevent="login">
@@ -36,15 +36,14 @@ export default {
 };
 </script>
 <style>
-body {
+.login-container {
   background-color: #714dd2;
-  height: 100%;
-}
-.container {
   padding-top: 10em;
   display: flex;
   justify-content: center;
   position: relative;
+  height: 100vh;
+  width: 100vw;
 }
 section {
   width: 35em;
