@@ -32,9 +32,8 @@ export default new Vuex.Store({
     login({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit("auth_request");
-        console.log(user);
         axios({
-          url: "http://127.0.0.1:8000/users/login/jwt",
+          url: `${process.env.VUE_APP_API_BASE_URL}/users/login/jwt`,
           data: qs.stringify(user),
           headers: {
             'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -60,7 +59,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit("auth_request");
         axios({
-          url: "http://127.0.0.1:8000/users/register",
+          url: `${process.env.VUE_APP_API_BASE_URL}/users/register`,
           data: user,
           method: "POST"
         })

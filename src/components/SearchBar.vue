@@ -52,7 +52,7 @@ export default {
       const movieTitle = this.movie;
       const posterBaseURL = "http://image.tmdb.org/t/p/w185";
       this.$http({
-        url: "http://127.0.0.1:8000/search-movie",
+        url: `${process.env.VUE_APP_API_BASE_URL}/search-movie`,
         params: { movie_title: movieTitle },
         method: "GET"
       }).then(response => {
