@@ -28,7 +28,8 @@
   <!-- </form> -->
   <div id="register-container">
     <section id="register-section">
-      <h1 id="register-title">Register</h1>
+      <h1 id="register-title">Welcome to Movie Reviews!</h1>
+      <p id="register-description">Check out the latest reviews from our community and don't waste your time with lame movies</p>
       <form id="register-form" @submit.prevent="register">
         <b-field label="First name">
           <b-input type="text" class="register-input" v-model="first_name" required></b-input>
@@ -80,31 +81,47 @@ export default {
 };
 </script>
 <style>
+:root {
+  --primary-color: #9c6cd3;
+  --secondary-color: #b08adc;
+  --grey: #4a4a4a;
+}
 #register-container {
-  background-color: #714dd2;
   padding-top: 5em;
   display: flex;
   justify-content: center;
   position: relative;
   height: 100vh;
   width: 100vw;
+  color: var(--grey);
 }
 #register-section {
-  width: 35em;
-  background-color: #ffffff;
-  height: 80vh;
+  width: 30em;
 }
 #register-title {
   text-align: center;
   font-size: 2em;
   padding-top: 1em;
 }
+#register-description {
+  text-align: center;
+  font-size: 1em;
+  padding: 1em 2em;
+  font-weight: 300;
+}
 #register-form {
   margin: 0 auto;
-  width: 65%;
-  padding-top: 2em;
+  padding: 2em;
+}
+.label {
+  color: var(--grey) !important;
+  font-weight: 400 !important;
 }
 .register-input {
   background-color: #e5e8ed !important;
+}
+.button {
+  margin-top: 1em;
+  background-color: var(--primary-color) !important;
 }
 </style>
