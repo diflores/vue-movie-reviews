@@ -46,7 +46,7 @@
         <b-field label="Confirm password">
           <b-input type="password" class="register-input" v-model="password_confirmation" required></b-input>
         </b-field>
-        <b-button class="button is-primary" native-type="submit">Register</b-button>
+        <b-button id="register-button" class="button is-primary" native-type="submit">Register</b-button>
       </form>
     </section>
   </div>
@@ -96,7 +96,7 @@ export default {
   color: var(--grey);
 }
 #register-section {
-  width: 30em;
+  width: 25em;
 }
 #register-title {
   text-align: center;
@@ -106,12 +106,12 @@ export default {
 #register-description {
   text-align: center;
   font-size: 1em;
-  padding: 1em 2em;
+  padding: 1em;
   font-weight: 300;
 }
 #register-form {
   margin: 0 auto;
-  padding: 2em;
+  padding: 2em 1em;
 }
 .label {
   color: var(--grey) !important;
@@ -120,7 +120,7 @@ export default {
 .register-input {
   background-color: #e5e8ed !important;
 }
-.button {
+#register-button {
   margin-top: 1em;
   background-color: var(--primary-color) !important;
 }
