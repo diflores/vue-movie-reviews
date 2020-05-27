@@ -39,5 +39,7 @@ export default {
 <style>
 #app {
   min-height: 100vh;
+  font-family: 'Roboto';
+  font-weight: 300;
 }
 </style>

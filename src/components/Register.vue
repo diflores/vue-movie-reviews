@@ -1,52 +1,55 @@
 <template>
-  <!-- <form @submit.prevent="register">
-      <label for="first-name">First Name</label>
-      <div>
-        <input id="first-name" type="text" v-model="first_name" required autofocus />
-      </div>
-      <label for="last-name">Last Name</label>
-      <div>
-        <input id="last-name" type="text" v-model="last_name" required autofocus />
-      </div>
-      <label for="email">E-Mail Address</label>
-      <div>
-        <input id="email" type="email" v-model="email" required />
-      </div>
-
-      <label for="password">Password</label>
-      <div>
-        <input id="password" type="password" v-model="password" required />
-      </div>
-      <label for="password-confirm">Confirm Password</label>
-      <div>
-        <input id="password-confirm" type="password" v-model="password_confirmation" required />
-      </div>
-
-      <div>
-        <button type="submit">Register</button>
-  </div>-->
-  <!-- </form> -->
   <div id="register-container">
     <section id="register-section">
       <h1 id="register-title">Welcome to Movie Reviews!</h1>
       <p id="register-description">Check out the latest reviews from our community and don't waste your time with lame movies</p>
       <form id="register-form" @submit.prevent="register">
-        <b-field label="First name">
-          <b-input type="text" class="register-input" v-model="first_name" required></b-input>
-        </b-field>
-        <b-field label="Last name">
-          <b-input type="text" class="register-input" v-model="last_name" required></b-input>
-        </b-field>
-        <b-field label="Email">
-          <b-input type="email" class="register-input" v-model="email" required></b-input>
-        </b-field>
-        <b-field label="Password">
-          <b-input type="password" class="register-input" v-model="password" required></b-input>
-        </b-field>
-        <b-field label="Confirm password">
-          <b-input type="password" class="register-input" v-model="password_confirmation" required></b-input>
-        </b-field>
-        <b-button id="register-button" class="button is-primary" native-type="submit">Register</b-button>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="First name"
+          type="text"
+          v-model="first_name"
+        ></v-text-field>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="Last name"
+          type="text"
+          v-model="last_name"
+        ></v-text-field>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="Email"
+          type="email"
+          v-model="email"
+        ></v-text-field>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="Password"
+          v-model="password"
+          @click:append="show_password = !show_password"
+          :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show_password ? 'text' : 'password'"
+        >
+        </v-text-field>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="Confirm password"
+          v-model="password_confirmation"
+          @click:append="show_password_confirmation = !show_password_confirmation"
+          :append-icon="show_password_confirmation ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show_password_confirmation ? 'text' : 'password'"
+        ></v-text-field>
+        <v-btn elevation="0" id="register-button" native-type="submit">Register</v-btn>
       </form>
     </section>
   </div>
@@ -60,7 +63,9 @@ export default {
       email: "",
       password: "",
       password_confirmation: "",
-      is_admin: null
+      is_admin: null,
+      show_password: false,
+      show_password_confirmation: false,
     };
   },
   methods: {
@@ -102,26 +107,20 @@ export default {
   text-align: center;
   font-size: 2em;
   padding-top: 1em;
+  font-weight: 300;
 }
 #register-description {
   text-align: center;
   font-size: 1em;
   padding: 1em;
-  font-weight: 300;
 }
 #register-form {
   margin: 0 auto;
   padding: 2em 1em;
 }
-.label {
-  color: var(--grey) !important;
-  font-weight: 400 !important;
-}
-.register-input {
-  background-color: #e5e8ed !important;
-}
 #register-button {
   margin-top: 1em;
-  background-color: var(--primary-color) !important;
+  background-color: var(--primary-color);
+  color: white;
 }
 </style>
