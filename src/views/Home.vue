@@ -1,6 +1,5 @@
 <template>
   <div id="home-container">
-    <h1 id="site-name">Movie Reviews</h1>
     <h2 id="site-slogan">Don’t waste your time with horrible movies, check our site first!</h2>
     <SearchBar />
   </div>
@@ -20,18 +19,11 @@ export default {
   height: 100%;
   width: 100%;
   position: absolute;
-}
-#site-name {
-  font-family: "Bangers";
-  font-size: 80pt;
-  color: #ffffff;
-  text-align: center;
-  padding-top: 1em;
+  color: var(--grey);
 }
 #site-slogan {
-  font-family: "Atma";
-  font-size: 20pt;
-  color: #ffffff;
-  text-align: center;
+  font-size: 1em;
+  padding: 2em;
+  font-weight: 400;
 }
 </style>

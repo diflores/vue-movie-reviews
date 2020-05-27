@@ -17,7 +17,7 @@
       <span v-if="isLoggedIn">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="redirect_profile">
               <v-icon>mdi-account</v-icon>
             </v-btn>
           </template>
@@ -25,7 +25,7 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon @click="logout" v-on="on">
+            <v-btn icon v-on="on" @click="logout">
               <v-icon>mdi-logout</v-icon>
             </v-btn>
           </template>
@@ -52,6 +52,10 @@ export default {
     },
     redirect_home: function () {
       this.$router.push("/home");
+    },
+    redirect_profile: function () {
+      // this.$router.push("/profile");
+      console.log('al perfil');
     },
   },
   created: function() {
