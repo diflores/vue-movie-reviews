@@ -1,21 +1,36 @@
 <template>
-  <div id="app">
+  <div id="app" data-app>
     <v-app-bar
       id="app-bar"
       color="#9c6cd3"
     >
-      <v-btn icon @click="redirect_home">
-        <v-icon>mdi-movie-open</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on" @click="redirect_home">
+            <v-icon>mdi-movie-open</v-icon>
+          </v-btn>
+        </template>
+        <span>Home</span>
+      </v-tooltip>
       <v-toolbar-title id="app-title">Movie Reviews</v-toolbar-title>
       <v-spacer></v-spacer>
       <span v-if="isLoggedIn">
-        <v-btn icon>
-          <v-icon>mdi-account</v-icon>
-        </v-btn>
-        <v-btn icon @click="logout">
-          <v-icon>mdi-logout</v-icon>
-        </v-btn>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on">
+              <v-icon>mdi-account</v-icon>
+            </v-btn>
+          </template>
+          <span>Profile</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon @click="logout" v-on="on">
+              <v-icon>mdi-logout</v-icon>
+            </v-btn>
+          </template>
+          <span>Logout</span>
+        </v-tooltip>
       </span>
     </v-app-bar>
     <router-view />
