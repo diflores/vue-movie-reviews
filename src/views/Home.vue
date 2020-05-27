@@ -17,7 +17,6 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Atma&family=Bangers&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700&display=swap");
 #home-container {
-  background-color: #714dd2;
   height: 100%;
   width: 100%;
   position: absolute;

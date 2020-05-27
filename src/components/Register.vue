@@ -5,7 +5,7 @@
       <p id="register-description">
         Check out the latest reviews from our community and don't waste your time with lame movies
       </p>
-      <form id="register-form" @submit.prevent="register">
+      <v-form id="register-form">
         <v-text-field
           single-line
           outlined
@@ -51,8 +51,8 @@
           :append-icon="show_password_confirmation ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show_password_confirmation ? 'text' : 'password'"
         ></v-text-field>
-        <v-btn elevation="0" id="register-button" native-type="submit">Register</v-btn>
-      </form>
+        <v-btn elevation="0" id="register-button" @click="register" :loading="is_loading">Register</v-btn>
+      </v-form>
     </section>
   </div>
 </template>
@@ -68,10 +68,12 @@ export default {
       is_admin: null,
       show_password: false,
       show_password_confirmation: false,
+      is_loading: false,
     };
   },
   methods: {
     register: function() {
+      this.is_loading = true;
       let data = {
         first_name: this.first_name,
         last_name: this.last_name,
@@ -82,7 +84,8 @@ export default {
       this.$store
         .dispatch("register", data)
         .then(() => this.$router.push("/"))
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
+        .finally(() => { this.is_loading = false; });
     }
   }
 };
@@ -98,8 +101,8 @@ export default {
   display: flex;
   justify-content: center;
   position: relative;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   color: var(--grey);
 }
 #register-section {
