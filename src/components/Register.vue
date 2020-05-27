@@ -97,7 +97,7 @@ export default {
   --grey: #4a4a4a;
 }
 #register-container {
-  padding-top: 5em;
+  padding-top: 2em;
   display: flex;
   justify-content: center;
   position: relative;

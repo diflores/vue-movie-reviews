@@ -54,7 +54,7 @@ export default {
 </script>
 <style>
 #login-container {
-  padding-top: 5em;
+  padding-top: 2em;
   display: flex;
   justify-content: center;
   position: relative;

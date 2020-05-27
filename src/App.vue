@@ -55,17 +55,17 @@ export default {
       });
     },
     redirect_home: function () {
-      this.$router.push("/home");
+      this.$router.push("/").catch(() => null);
     },
     redirect_profile: function () {
       // this.$router.push("/profile");
       console.log('al perfil');
     },
     redirect_register: function () {
-      this.$router.push("/register");
+      this.$router.push("/register").catch(() => null);
     },
     redirect_login: function () {
-      this.$router.push("/login");
+      this.$router.push("/login").catch(() => null);
     },
   },
   created: function() {

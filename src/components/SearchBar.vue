@@ -1,5 +1,5 @@
 <template>
-  <section id="search-section">
+  <section v-if="isLoggedIn" id="search-section">
     <div id="search-container">
       <v-text-field
         single-line
@@ -81,7 +81,6 @@ export default {
 #search-container{
   display: flex;
   flex-direction: row;
-  padding: 0 2em;
   width: 24em;
 }
 .card {
