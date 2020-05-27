@@ -2,7 +2,9 @@
   <div id="register-container">
     <section id="register-section">
       <h1 id="register-title">Welcome to Movie Reviews!</h1>
-      <p id="register-description">Check out the latest reviews from our community and don't waste your time with lame movies</p>
+      <p id="register-description">
+        Check out the latest reviews from our community and don't waste your time with lame movies
+      </p>
       <form id="register-form" @submit.prevent="register">
         <v-text-field
           single-line

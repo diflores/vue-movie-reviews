@@ -4,13 +4,25 @@
       <h1 id="login-title">Welcome back!</h1>
       <p id="login-description">We missed your reviews</p>
       <form id="login-form" @submit.prevent="login">
-        <b-field label="Email">
-          <b-input class="login-input" type="email" v-model="email" required></b-input>
-        </b-field>
-        <b-field label="Password">
-          <b-input class="login-input" v-model="password" type="password" required></b-input>
-        </b-field>
-        <b-button id="login-button" class="button is-primary" native-type="submit">Login</b-button>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="Email"
+          type="email"
+          v-model="email"
+        ></v-text-field>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="Password"
+          v-model="password"
+          @click:append="show_password = !show_password"
+          :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show_password ? 'text' : 'password'"
+        ></v-text-field>
+        <v-btn elevation="0" id="login-button" native-type="submit">Login</v-btn>
       </form>
     </section>
   </div>
@@ -21,7 +33,8 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      show_password: false,
     };
   },
   methods: {
@@ -64,11 +77,9 @@ export default {
   margin: 0 auto;
   padding: 2em;
 }
-.login-input {
-  background-color: #e5e8ed !important;
-}
 #login-button {
   margin-top: 1em;
-  background-color: var(--primary-color) !important;
+  background-color: var(--primary-color);
+  color: white;
 }
 </style>
