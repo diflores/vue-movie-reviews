@@ -14,7 +14,7 @@
       </v-tooltip>
       <v-toolbar-title id="app-title">Movie Reviews</v-toolbar-title>
       <v-spacer></v-spacer>
-      <span v-if="isLoggedIn">
+      <div v-if="isLoggedIn">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on" @click="redirect_profile">
@@ -31,7 +31,11 @@
           </template>
           <span>Logout</span>
         </v-tooltip>
-      </span>
+      </div>
+      <div v-if="!isLoggedIn">
+        <v-btn id="app-bar-button" elevation="0" @click="redirect_register">Register</v-btn>
+        <v-btn id="app-bar-button" elevation="0" @click="redirect_login">Login</v-btn>
+      </div>
     </v-app-bar>
     <router-view />
   </div>
@@ -56,6 +60,12 @@ export default {
     redirect_profile: function () {
       // this.$router.push("/profile");
       console.log('al perfil');
+    },
+    redirect_register: function () {
+      this.$router.push("/register");
+    },
+    redirect_login: function () {
+      this.$router.push("/login");
     },
   },
   created: function() {
@@ -83,5 +93,10 @@ export default {
 #app-title {
   color: white;
   font-weight: 400;
+  padding-left: 1em;
+}
+#app-bar-button {
+  background-color: transparent;
+  color: white;
 }
 </style>
