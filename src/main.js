@@ -1,18 +1,13 @@
-import Vue from "vue";
 import App from "./App.vue";
 import store from "./store";
 import Axios from "axios";
 import router from "./router";
-import { Button, Field, Input, Modal } from "buefy";
-import "buefy/dist/buefy.css";
+import Vue from 'vue';
+import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false;
 
 Vue.prototype.$http = Axios;
-Vue.use(Input);
-Vue.use(Field);
-Vue.use(Button);
-Vue.use(Modal);
 
 const token = localStorage.getItem("token");
 if (token) {
@@ -23,5 +18,6 @@ if (token) {
 new Vue({
   render: h => h(App),
   store,
-  router
+  router,
+  vuetify,
 }).$mount("#app");

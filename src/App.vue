@@ -1,11 +1,42 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <span v-if="isLoggedIn">
-        |
-        <a @click="logout">Logout</a>
-      </span>
-    </div>
+  <div id="app" data-app>
+    <v-app-bar
+      id="app-bar"
+      color="#9c6cd3"
+    >
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on" @click="redirect_home">
+            <v-icon>mdi-movie-open</v-icon>
+          </v-btn>
+        </template>
+        <span>Home</span>
+      </v-tooltip>
+      <v-toolbar-title id="app-title">Movie Reviews</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <div v-if="isLoggedIn">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="redirect_profile">
+              <v-icon>mdi-account</v-icon>
+            </v-btn>
+          </template>
+          <span>Profile</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="logout">
+              <v-icon>mdi-logout</v-icon>
+            </v-btn>
+          </template>
+          <span>Logout</span>
+        </v-tooltip>
+      </div>
+      <div v-if="!isLoggedIn">
+        <v-btn id="app-bar-button" elevation="0" @click="redirect_register">Register</v-btn>
+        <v-btn id="app-bar-button" elevation="0" @click="redirect_login">Login</v-btn>
+      </div>
+    </v-app-bar>
     <router-view />
   </div>
 </template>
@@ -22,7 +53,20 @@ export default {
       this.$store.dispatch("logout").then(() => {
         this.$router.push("/login");
       });
-    }
+    },
+    redirect_home: function () {
+      this.$router.push("/").catch(() => null);
+    },
+    redirect_profile: function () {
+      // this.$router.push("/profile");
+      console.log('al perfil');
+    },
+    redirect_register: function () {
+      this.$router.push("/register").catch(() => null);
+    },
+    redirect_login: function () {
+      this.$router.push("/login").catch(() => null);
+    },
   },
   created: function() {
     this.$http.interceptors.response.use(undefined, function(err) {
@@ -38,6 +82,21 @@ export default {
 </script>
 <style>
 #app {
-  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+  font-family: 'Roboto';
+  font-weight: 300;
+}
+#app-bar {
+  box-shadow: 0 2px 4px 0 #e5e5e5;
+}
+#app-title {
+  color: white;
+  font-weight: 400;
+  padding-left: 1em;
+}
+#app-bar-button {
+  background-color: transparent;
+  color: white;
 }
 </style>

@@ -1,52 +1,58 @@
 <template>
-  <!-- <form @submit.prevent="register">
-      <label for="first-name">First Name</label>
-      <div>
-        <input id="first-name" type="text" v-model="first_name" required autofocus />
-      </div>
-      <label for="last-name">Last Name</label>
-      <div>
-        <input id="last-name" type="text" v-model="last_name" required autofocus />
-      </div>
-      <label for="email">E-Mail Address</label>
-      <div>
-        <input id="email" type="email" v-model="email" required />
-      </div>
-
-      <label for="password">Password</label>
-      <div>
-        <input id="password" type="password" v-model="password" required />
-      </div>
-      <label for="password-confirm">Confirm Password</label>
-      <div>
-        <input id="password-confirm" type="password" v-model="password_confirmation" required />
-      </div>
-
-      <div>
-        <button type="submit">Register</button>
-  </div>-->
-  <!-- </form> -->
   <div id="register-container">
     <section id="register-section">
-      <h1 id="register-title">Register</h1>
-      <form id="register-form" @submit.prevent="register">
-        <b-field label="First name">
-          <b-input type="text" class="register-input" v-model="first_name" required></b-input>
-        </b-field>
-        <b-field label="Last name">
-          <b-input type="text" class="register-input" v-model="last_name" required></b-input>
-        </b-field>
-        <b-field label="Email">
-          <b-input type="email" class="register-input" v-model="email" required></b-input>
-        </b-field>
-        <b-field label="Password">
-          <b-input type="password" class="register-input" v-model="password" required></b-input>
-        </b-field>
-        <b-field label="Confirm password">
-          <b-input type="password" class="register-input" v-model="password_confirmation" required></b-input>
-        </b-field>
-        <b-button class="button is-primary" native-type="submit">Register</b-button>
-      </form>
+      <h1 id="register-title">Welcome to Movie Reviews!</h1>
+      <p id="register-description">
+        Check out the latest reviews from our community and don't waste your time with lame movies
+      </p>
+      <v-form id="register-form">
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="First name"
+          type="text"
+          v-model="first_name"
+        ></v-text-field>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="Last name"
+          type="text"
+          v-model="last_name"
+        ></v-text-field>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="Email"
+          type="email"
+          v-model="email"
+        ></v-text-field>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="Password"
+          v-model="password"
+          @click:append="show_password = !show_password"
+          :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show_password ? 'text' : 'password'"
+        >
+        </v-text-field>
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          label="Confirm password"
+          v-model="password_confirmation"
+          @click:append="show_password_confirmation = !show_password_confirmation"
+          :append-icon="show_password_confirmation ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show_password_confirmation ? 'text' : 'password'"
+        ></v-text-field>
+        <v-btn elevation="0" id="register-button" @click="register" :loading="is_loading">Register</v-btn>
+      </v-form>
     </section>
   </div>
 </template>
@@ -59,11 +65,15 @@ export default {
       email: "",
       password: "",
       password_confirmation: "",
-      is_admin: null
+      is_admin: null,
+      show_password: false,
+      show_password_confirmation: false,
+      is_loading: false,
     };
   },
   methods: {
     register: function() {
+      this.is_loading = true;
       let data = {
         first_name: this.first_name,
         last_name: this.last_name,
@@ -74,37 +84,48 @@ export default {
       this.$store
         .dispatch("register", data)
         .then(() => this.$router.push("/"))
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
+        .finally(() => { this.is_loading = false; });
     }
   }
 };
 </script>
 <style>
+:root {
+  --primary-color: #9c6cd3;
+  --secondary-color: #b08adc;
+  --grey: #4a4a4a;
+}
 #register-container {
-  background-color: #714dd2;
-  padding-top: 5em;
+  padding-top: 2em;
   display: flex;
   justify-content: center;
   position: relative;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
+  color: var(--grey);
 }
 #register-section {
-  width: 35em;
-  background-color: #ffffff;
-  height: 80vh;
+  width: 25em;
 }
 #register-title {
   text-align: center;
   font-size: 2em;
   padding-top: 1em;
+  font-weight: 300;
+}
+#register-description {
+  text-align: center;
+  font-size: 1em;
+  padding: 1em;
 }
 #register-form {
   margin: 0 auto;
-  width: 65%;
-  padding-top: 2em;
+  padding: 2em 1em;
 }
-.register-input {
-  background-color: #e5e8ed !important;
+#register-button {
+  margin-top: 1em;
+  background-color: var(--primary-color);
+  color: white;
 }
 </style>
