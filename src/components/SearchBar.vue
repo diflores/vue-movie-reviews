@@ -12,22 +12,25 @@
         append-icon="mdi-magnify"
       ></v-text-field>
     </div>
+    <h1 v-if="results.length" id="results-title">Movie Search Results</h1>
     <div class="movies-container">
-      <div class="card" v-for="result in results" :key="result.id">
-        <div class="card-image">
-          <figure class="image is-4by3">
-            <img :src="result.posterURL" alt="Image" />
-          </figure>
-        </div>
-        <div class="card-content movie-content">
-          <div class="media">
-            <div class="media-content">
-              <p class="title is-4">{{ result.title }}</p>
-            </div>
-          </div>
-          <div class="content">{{ result.plot }}</div>
-        </div>
-      </div>
+      <v-card
+        class="mx-auto"
+        max-width="350"
+        v-for="result in results" :key="result.id"
+      >
+        <v-img
+          :src="result.posterURL"
+          height="200px"
+          contain
+        ></v-img>
+        <v-card-title id="card-title">
+          {{ result.title }}
+        </v-card-title>
+        <v-card-subtitle id="card-subtitle">
+          {{ result.plot }}
+        </v-card-subtitle>
+      </v-card>
     </div>
   </section>
 </template>
@@ -83,14 +86,19 @@ export default {
   flex-direction: row;
   width: 24em;
 }
-.card {
-  width: 15em;
+#results-title {
+  font-weight: 300;
 }
-.movie-content {
-  background-color: #ffffff !important;
+#card-title {
+  color: var(--grey);
+  font-weight: 400;
+}
+#card-subtitle {
+  color: var(--grey);
+  font-weight: 300;
 }
 .movies-container {
-  margin-top: 3em;
+  margin-top: 2em;
   padding-bottom: 3em;
   display: grid;
   justify-items: center;
