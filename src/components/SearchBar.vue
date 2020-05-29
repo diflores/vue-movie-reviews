@@ -59,6 +59,7 @@
 </template>
 <script>
 import Card from "./Card";
+import { parseResults } from "../utils";
 export default {
   components: {
     Card,
@@ -79,92 +80,40 @@ export default {
   },
   created() {
     if (this.$store.getters.isLoggedIn) {
-      const posterBaseURL = "http://image.tmdb.org/t/p/w185";
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/discover-movie`,
         params: { sort_by: "popularity.desc" },
         method: "GET"
-      }).then(response => {
-        this.most_popular_movies = [];
-        response.data.results.forEach(movie => {
-          if (movie.poster_path) {
-            const result = {};
-            result["posterURL"] = `${posterBaseURL}${movie.poster_path}`;
-            result["id"] = movie.id;
-            result["title"] = movie.title;
-            result["plot"] =
-              movie.overview.length > 140
-                ? movie.overview.substring(0, 140).trimRight() + "..."
-                : movie.overview;
-            this.most_popular_movies.push(result);
-          }
-        });
+      }).then((response) => {
+        this.most_popular_movies = parseResults(response);
       });
+      
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/discover-movie`,
         params: { certification_country: "US", certification: "G", sort_by: "popularity.desc" },
         method: "GET"
-      }).then(response => {
-        this.most_popular_kids_movies = [];
-        response.data.results.forEach(movie => {
-          if (movie.poster_path) {
-            const result = {};
-            result["posterURL"] = `${posterBaseURL}${movie.poster_path}`;
-            result["id"] = movie.id;
-            result["title"] = movie.title;
-            result["plot"] =
-              movie.overview.length > 140
-                ? movie.overview.substring(0, 140).trimRight() + "..."
-                : movie.overview;
-            this.most_popular_kids_movies.push(result);
-          }
-        });
+      }).then((response) => {
+        this.most_popular_kids_movies = parseResults(response);
       });
+
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/discover-movie`,
         params: { year: 2019, sort_by: "vote_average.desc" },
         method: "GET"
-      }).then(response => {
-        this.best_movies_2019 = [];
-        response.data.results.forEach(movie => {
-          if (movie.poster_path) {
-            const result = {};
-            result["posterURL"] = `${posterBaseURL}${movie.poster_path}`;
-            result["id"] = movie.id;
-            result["title"] = movie.title;
-            result["plot"] =
-              movie.overview.length > 140
-                ? movie.overview.substring(0, 140).trimRight() + "..."
-                : movie.overview;
-            this.best_movies_2019.push(result);
-          }
-        });
+      }).then((response) => {
+        this.best_movies_2019 = parseResults(response);
       });
     }
   },
   methods: {
     search: function() {
       const movieTitle = this.movie;
-      const posterBaseURL = "http://image.tmdb.org/t/p/w185";
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/search-movie`,
         params: { movie_title: movieTitle },
         method: "GET"
-      }).then(response => {
-        this.results = [];
-        response.data.results.forEach(movie => {
-          if (movie.poster_path) {
-            const result = {};
-            result["posterURL"] = `${posterBaseURL}${movie.poster_path}`;
-            result["id"] = movie.id;
-            result["title"] = movie.title;
-            result["plot"] =
-              movie.overview.length > 140
-                ? movie.overview.substring(0, 140).trimRight() + "..."
-                : movie.overview;
-            this.results.push(result);
-          }
-        });
+      }).then((response) => {
+        this.results = parseResults(response);
       });
     }
   }
@@ -188,14 +137,6 @@ export default {
 }
 #results-title {
   font-weight: 400;
-}
-#card-title {
-  color: var(--grey);
-  font-weight: 400;
-}
-#card-subtitle {
-  color: var(--grey);
-  font-weight: 300;
 }
 .movies-container {
   margin: 2em 0 2em;
