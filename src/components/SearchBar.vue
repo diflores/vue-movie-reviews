@@ -136,7 +136,7 @@ export default {
   padding-top: 2em;
 }
 #results-title {
-  font-weight: 400;
+  font-weight: 300;
 }
 .movies-container {
   margin: 2em 0 2em;
