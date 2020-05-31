@@ -10,8 +10,9 @@
               <div>
                 <p>{{ movie.overview }}</p>
                 <br>
-                <p>Language: {{ movie.spoken_languages[0].name }}</p>
+                <p>Duration: {{ movie.parsed_duration }}</p>
                 <p>Date: {{ movie.release_date }}</p>
+                <p>Language: {{ movie.spoken_languages[0].name }}</p>
                 <br>
                 <p id="bolder">Cast: {{ movie.actors }}</p>
                 <p id="bolder">Director: {{ movie.director }}</p>
@@ -96,6 +97,7 @@ export default {
         director: "",
         actors: "",
         vote_average: "",
+        parsed_duration: "",
       },
       reviews: [],
     };
@@ -108,6 +110,11 @@ export default {
     }).then((response) => {
       const movie = response.data;
       movie["image"] = `${posterBaseURL}${movie.poster_path}`;
+      const hours = (movie.runtime / 60);
+      const rhours = Math.floor(hours);
+      const minutes = (hours - rhours) * 60;
+      const rminutes = Math.round(minutes);
+      movie["parsed_duration"] = `${rhours}h ${rminutes}m`;
       this.movie = movie;
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}/credits`,
@@ -117,14 +124,12 @@ export default {
         this.movie["actors"] = credits.cast.slice(0, 5).map((actor) => actor.name).join(", ");
         this.movie["director"] = credits.crew.find((person) => person.job === "Director").name;
         this.is_loading = false;
-        console.log(this.movie)
       });
     });
     this.$http({
       url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}/reviews`,
       method: "GET"
     }).then((response) => {
-      console.log(response.data);
       this.reviews = response.data;
     });
   },
