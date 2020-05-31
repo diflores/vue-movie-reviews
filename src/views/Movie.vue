@@ -2,13 +2,14 @@
   <div id="movie-container" v-if="isLoggedIn && !is_loading">
     <div>
       <v-row no-gutters>
-        <v-col cols="12" sm="6">
+        <v-col cols="12" sm="7">
           <h1 id="movie-title">{{ movie.title }}</h1>
           <div id="info-container">
-            <div>
+            <div id="display-in-row">
               <v-img :src="movie.image" height="300px"></v-img>
               <div>
                 <p>{{ movie.overview }}</p>
+                <br>
                 <p>Language: {{ movie.spoken_languages[0].name }}</p>
                 <p>Date: {{ movie.release_date }}</p>
                 <br>
@@ -25,7 +26,7 @@
             </div>
           </div>
         </v-col>
-        <v-col cols="12" sm="6">
+        <v-col cols="12" sm="5">
           <div id="review-container">
             <h1 id="add-review-title">Add your review</h1>
             <v-textarea
@@ -34,7 +35,7 @@
               v-model="review"
             ></v-textarea>
             <div>
-              <div>
+              <div id="display-in-row">
                 <h3 id="score-title">Score:</h3>
                 <v-select
                   outlined
@@ -57,6 +58,17 @@
     </div>
     <div v-if="reviews.length">
       <h1 id="reviews-title">Showing {{ reviews.length }} review(s)</h1>
+      <v-row>
+        <v-col cols="12" sm="6" v-for="movie_review in reviews" :key="movie_review.id">
+          <div id="display-in-row">
+            <p id="user-name">Nombre Apellido</p>
+            <p id="review-date">{{ movie_review.created_at.slice(0, 10)}}</p>
+          </div>
+          <br>
+          <p>{{ movie_review.review }}</p>
+          <p id="bolder">Score: {{ movie_review.rating }}/10</p>
+        </v-col>
+      </v-row>
     </div>
   </div>
 </template>
@@ -105,6 +117,7 @@ export default {
         this.movie["actors"] = credits.cast.slice(0, 5).map((actor) => actor.name).join(", ");
         this.movie["director"] = credits.crew.find((person) => person.job === "Director").name;
         this.is_loading = false;
+        console.log(this.movie)
       });
     });
     this.$http({
@@ -145,9 +158,6 @@ export default {
   padding-right: 1em;
   padding-top: 1em;
 }
-#info-container > div {
-  display: flex;
-}
 #info-container > div > div {
   padding-left: 1em;
 }
@@ -171,17 +181,26 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-#review-container > div > div {
-  display: flex;
-}
 #reviews-title {
   font-size: 1.5em;
   font-weight: 300;
   padding-top: 2em;
+  padding-bottom: 1em;
 }
 #score-title {
   font-weight: 300;
   padding-top: 1em;
   padding-right: 1em;
+}
+#display-in-row {
+  display: flex;
+}
+#user-name {
+  font-weight: 400;
+  color: var(--secondary-color);
+  padding-right: 2em;
+}
+#review-date {
+  color: grey;
 }
 </style>
