@@ -78,6 +78,21 @@ export default new Vuex.Store({
           });
       });
     },
+    create_review(_, review) {
+      return new Promise((resolve, reject) => {
+        axios({
+          url: `${process.env.VUE_APP_API_BASE_URL}/reviews`,
+          data: review,
+          method: "POST"
+        })
+          .then(resp => {
+            resolve(resp);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
+    },
     logout({ commit }) {
       return new Promise((resolve) => {
         commit("logout");

@@ -56,7 +56,7 @@
       </v-row>
     </div>
     <div v-if="reviews.length">
-      <h1 id="reviews-title">Showing {{ reviews.length }} reviews</h1>
+      <h1 id="reviews-title">Showing {{ reviews.length }} review(s)</h1>
     </div>
   </div>
 </template>
@@ -97,31 +97,39 @@ export default {
       const movie = response.data;
       movie["image"] = `${posterBaseURL}${movie.poster_path}`;
       this.movie = movie;
-    });
-    this.$http({
-      url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}/credits`,
-      method: "GET"
-    }).then((response) => {
-      const credits = response.data;
-      this.movie["actors"] = credits.cast.slice(0, 5).map((actor) => actor.name).join(", ");
-      this.movie["director"] = credits.crew.find((person) => person.job === "Director").name;
-      this.is_loading = false;
+      this.$http({
+        url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}/credits`,
+        method: "GET"
+      }).then((response) => {
+        const credits = response.data;
+        this.movie["actors"] = credits.cast.slice(0, 5).map((actor) => actor.name).join(", ");
+        this.movie["director"] = credits.crew.find((person) => person.job === "Director").name;
+        this.is_loading = false;
+      });
     });
     this.$http({
       url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}/reviews`,
       method: "GET"
     }).then((response) => {
+      console.log(response.data);
       this.reviews = response.data;
     });
   },
   methods: {
     submit_review: function () {
       this.is_loading_submit = true;
-      console.log(this.review);
-      console.log(this.score);
-      this.is_loading_submit = false;
-      this.review = "";
-      this.score = 5;
+      let data = {
+        review: this.review,
+        rating: this.score,
+        movie_id: this.movieId,
+      };
+      this.$store
+        .dispatch("create_review", data)
+        .then(() => {
+          this.is_loading_submit = false;
+          this.review = "";
+          this.score = 5;
+        });
     },
   },
 };
