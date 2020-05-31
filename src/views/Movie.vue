@@ -16,6 +16,29 @@
         <v-col cols="12" sm="6">
           <div id="review-container">
             <h1 id="add-review-title">Add your review</h1>
+            <v-textarea
+              outlined
+              color="#b08adc"
+              v-model="review"
+            ></v-textarea>
+            <div>
+              <div>
+                <h3 id="score-title">Score:</h3>
+                <v-select
+                  outlined
+                  :items="scores"
+                  color="#b08adc"
+                  :value="5"
+                  v-model="score"
+                ></v-select>
+              </div>
+              <v-btn
+                elevation="0"
+                id="login-button"
+                @click="submit_review"
+                :loading="is_loading_submit"
+              >Submit</v-btn>
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -36,8 +59,10 @@ export default {
   data() {
     return {
       review: "",
-      score: "",
+      score: 5,
       is_loading: true,
+      is_loading_submit: false,
+      scores: [1, 2 ,3, 4, 5, 6, 7, 8, 9, 10],
       movie: {
         title: "",
         overview: "",
@@ -60,6 +85,16 @@ export default {
       this.is_loading = false;
     });
   },
+  methods: {
+    submit_review: function () {
+      this.is_loading_submit = true;
+      console.log(this.review);
+      console.log(this.score);
+      this.is_loading_submit = false;
+      this.review = "";
+      this.score = 5;
+    },
+  },
 };
 </script>
 <style>
@@ -75,7 +110,6 @@ export default {
 }
 #info-container > div {
   display: flex;
-  flex-direction: row;
 }
 #info-container > div > div {
   padding-left: 1em;
@@ -87,13 +121,27 @@ export default {
 #add-review-title {
   font-weight: 300;
   font-size: 1.5em;
+  padding-top: 2em;
+  padding-bottom: 1em;
 }
 #review-container {
   padding-left: 2em;
+}
+#review-container > div {
+  display: flex;
+  justify-content: space-between;
+}
+#review-container > div > div {
+  display: flex;
 }
 #reviews-title {
   font-size: 1.5em;
   font-weight: 300;
   padding-top: 2em;
+}
+#score-title {
+  font-weight: 300;
+  padding-top: 1em;
+  padding-right: 1em;
 }
 </style>
