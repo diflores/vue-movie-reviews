@@ -9,6 +9,8 @@
               <v-img :src="movie.image" height="300px"></v-img>
               <div>
                 <p>{{ movie.overview }}</p>
+                <p>Language: {{ movie.spoken_languages[0].name }}</p>
+                <p>Date: {{ movie.release_date }}</p>
                 <br>
                 <p id="bolder">Cast: {{ movie.actors }}</p>
                 <p id="bolder">Director: {{ movie.director }}</p>
@@ -53,7 +55,9 @@
         </v-col>
       </v-row>
     </div>
-    <h1 id="reviews-title">Showing x reviews</h1>
+    <div v-if="reviews.length">
+      <h1 id="reviews-title">Showing {{ reviews.length }} reviews</h1>
+    </div>
   </div>
 </template>
 <script>
@@ -81,6 +85,7 @@ export default {
         actors: "",
         vote_average: "",
       },
+      reviews: [],
     };
   },
   created() {
@@ -101,6 +106,12 @@ export default {
       this.movie["actors"] = credits.cast.slice(0, 5).map((actor) => actor.name).join(", ");
       this.movie["director"] = credits.crew.find((person) => person.job === "Director").name;
       this.is_loading = false;
+    });
+    this.$http({
+      url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}/reviews`,
+      method: "GET"
+    }).then((response) => {
+      this.reviews = response.data;
     });
   },
   methods: {
