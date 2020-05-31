@@ -8,7 +8,17 @@
             <div>
               <v-img :src="movie.image" height="300px"></v-img>
               <div>
-                <p id="movie-plot">{{ movie.overview }}</p>
+                <p>{{ movie.overview }}</p>
+                <br>
+                <p id="bolder">Cast: {{ movie.actors }}</p>
+                <p id="bolder">Director: {{ movie.director }}</p>
+                <p id="bolder">Average score: {{ movie.vote_average }}/10</p>
+                <br>
+                <v-chip-group column>
+                  <v-chip v-for="genre in movie.genres" :key="genre.id">
+                    {{ genre.name }}
+                  </v-chip>
+                </v-chip-group>
               </div>
             </div>
           </div>
@@ -69,7 +79,7 @@ export default {
         image: "",
         director: "",
         actors: "",
-        average_score: "",
+        vote_average: "",
       },
     };
   },
@@ -82,6 +92,14 @@ export default {
       const movie = response.data;
       movie["image"] = `${posterBaseURL}${movie.poster_path}`;
       this.movie = movie;
+    });
+    this.$http({
+      url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}/credits`,
+      method: "GET"
+    }).then((response) => {
+      const credits = response.data;
+      this.movie["actors"] = credits.cast.slice(0, 5).map((actor) => actor.name).join(", ");
+      this.movie["director"] = credits.crew.find((person) => person.job === "Director").name;
       this.is_loading = false;
     });
   },
@@ -117,6 +135,9 @@ export default {
 #movie-title {
   font-weight: 300;
   font-size: 2em;
+}
+#bolder {
+  font-weight: 400;
 }
 #add-review-title {
   font-weight: 300;
