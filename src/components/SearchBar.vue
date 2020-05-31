@@ -102,7 +102,7 @@ export default {
 
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/discover-movie`,
-        params: { year: 2019, sort_by: "vote_average.desc" },
+        params: { primary_release_year: 2019, sort_by: "vote_average.desc", vote_count_gte: 1000 },
         method: "GET"
       }).then((response) => {
         this.best_movies_2019 = parseResults(response);
