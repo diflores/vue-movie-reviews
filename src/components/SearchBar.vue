@@ -22,6 +22,7 @@
           :card-title="result.title"
           :card-subtitle="result.plot"
           :card-image="result.posterURL"
+          :on-click="() => { redirect_movie(result.id) }"
         ></Card>
       </div>
 
@@ -32,6 +33,7 @@
           :card-title="result.title"
           :card-subtitle="result.plot"
           :card-image="result.posterURL"
+          :on-click="() => { redirect_movie(result.id) }"
         ></Card>
       </div>
 
@@ -42,6 +44,7 @@
           :card-title="result.title"
           :card-subtitle="result.plot"
           :card-image="result.posterURL"
+          :on-click="() => { redirect_movie(result.id) }"
         ></Card>
       </div>
     </div>
@@ -53,6 +56,7 @@
         :card-title="result.title"
         :card-subtitle="result.plot"
         :card-image="result.posterURL"
+        :on-click="() => { redirect_movie(result.id) }"
       ></Card>
     </div>
   </section>
@@ -79,7 +83,7 @@ export default {
     };
   },
   created() {
-    if (this.$store.getters.isLoggedIn) {
+    if (this.isLoggedIn) {
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/discover-movie`,
         params: { sort_by: "popularity.desc" },
@@ -115,7 +119,10 @@ export default {
       }).then((response) => {
         this.results = parseResults(response);
       });
-    }
+    },
+    redirect_movie: function (movie_id) {
+      this.$router.push(`/movie/${movie_id}`).catch(() => null);
+    },
   }
 };
 </script>

@@ -14,7 +14,6 @@
         </v-col>
       </v-row>
     </div>
-    <SearchBar />
   </div>
 </template>
 <script>
@@ -22,7 +21,24 @@ export default {
   computed: {
     isLoggedIn: function() {
       return this.$store.getters.isLoggedIn;
-    }
+    },
+    movieId: function() {
+      return this.$route.params.id;
+    },
+  },
+  data() {
+    return {
+      review: "",
+      score: "",
+    };
+  },
+  created() {
+    this.$http({
+      url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}`,
+      method: "GET"
+    }).then((response) => {
+      console.log(response);
+    });
   },
 };
 </script>
