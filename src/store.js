@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import qs from 'qs';
+import qs from "qs";
 
 Vue.use(Vuex);
 
@@ -9,14 +9,13 @@ export default new Vuex.Store({
   state: {
     status: "",
     token: localStorage.getItem("token") || "",
-    userId: localStorage.getItem("userId") || "",
+    userId: localStorage.getItem("userId") || ""
   },
   mutations: {
     auth_request(state) {
       state.status = "loading";
     },
-    auth_success(state, token, userId) {
-      console.log('wtff', userId);
+    auth_success(state, [token, userId]) {
       state.status = "success";
       state.token = token;
       state.userId = userId;
@@ -38,7 +37,7 @@ export default new Vuex.Store({
           url: `${process.env.VUE_APP_API_BASE_URL}/users/login/jwt`,
           data: qs.stringify(user),
           headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            "content-type": "application/x-www-form-urlencoded;charset=utf-8"
           },
           method: "POST"
         })
@@ -49,18 +48,21 @@ export default new Vuex.Store({
             axios({
               url: `${process.env.VUE_APP_API_BASE_URL}/users/me`,
               method: "GET"
-            }).then((response) => {
-              const userId = response.data.id;
-              localStorage.setItem("token", token);
-              localStorage.setItem("userId", userId);
-              commit("auth_success", token, userId);
-              resolve(resp);
-            }).catch((error) => {
-              commit("auth_error");
-              localStorage.removeItem("token");
-              localStorage.removeItem("userId");
-              reject(error);
-            });
+            })
+              .then(response => {
+                const userId = response.data.id;
+                localStorage.setItem("token", token);
+                localStorage.setItem("userId", userId);
+                console.log(userId);
+                commit("auth_success", [token, userId]);
+                resolve(resp);
+              })
+              .catch(error => {
+                commit("auth_error");
+                localStorage.removeItem("token");
+                localStorage.removeItem("userId");
+                reject(error);
+              });
           })
           .catch(err => {
             commit("auth_error");
@@ -103,7 +105,7 @@ export default new Vuex.Store({
       });
     },
     logout({ commit }) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         commit("logout");
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
@@ -112,9 +114,9 @@ export default new Vuex.Store({
       });
     }
   },
-  getters : {
+  getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
-    loggedUserId: state => state.userId,
+    loggedUserId: state => state.userId
   }
 });
