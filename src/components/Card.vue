@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="350">
+  <v-card class="mx-auto" max-width="350" @click="onClick">
     <v-img
       :src="cardImage"
       height="180px"
@@ -25,6 +25,10 @@ export default {
     },
     cardImage: {
       type: String,
+    },
+    onClick: {
+      type: Function,
+      default: () => null,
     },
   },
 };

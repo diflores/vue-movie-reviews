@@ -22,6 +22,7 @@
           :card-title="result.title"
           :card-subtitle="result.plot"
           :card-image="result.posterURL"
+          :on-click="() => { redirect_movie(result.id) }"
         ></Card>
       </div>
 
@@ -32,6 +33,7 @@
           :card-title="result.title"
           :card-subtitle="result.plot"
           :card-image="result.posterURL"
+          :on-click="() => { redirect_movie(result.id) }"
         ></Card>
       </div>
 
@@ -42,6 +44,7 @@
           :card-title="result.title"
           :card-subtitle="result.plot"
           :card-image="result.posterURL"
+          :on-click="() => { redirect_movie(result.id) }"
         ></Card>
       </div>
     </div>
@@ -53,6 +56,7 @@
         :card-title="result.title"
         :card-subtitle="result.plot"
         :card-image="result.posterURL"
+        :on-click="() => { redirect_movie(result.id) }"
       ></Card>
     </div>
   </section>
@@ -79,7 +83,7 @@ export default {
     };
   },
   created() {
-    if (this.$store.getters.isLoggedIn) {
+    if (this.isLoggedIn) {
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/discover-movie`,
         params: { sort_by: "popularity.desc" },
@@ -98,7 +102,7 @@ export default {
 
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/discover-movie`,
-        params: { year: 2019, sort_by: "vote_average.desc" },
+        params: { primary_release_year: 2019, sort_by: "vote_average.desc", vote_count_gte: 1000 },
         method: "GET"
       }).then((response) => {
         this.best_movies_2019 = parseResults(response);
@@ -115,7 +119,10 @@ export default {
       }).then((response) => {
         this.results = parseResults(response);
       });
-    }
+    },
+    redirect_movie: function (movie_id) {
+      this.$router.push(`/movie/${movie_id}`).catch(() => null);
+    },
   }
 };
 </script>
@@ -136,7 +143,7 @@ export default {
   padding-top: 2em;
 }
 #results-title {
-  font-weight: 400;
+  font-weight: 300;
 }
 .movies-container {
   margin: 2em 0 2em;
