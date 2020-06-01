@@ -62,7 +62,7 @@
       <v-row>
         <v-col cols="12" sm="6" v-for="movie_review in reviews" :key="movie_review.id">
           <div id="display-in-row">
-            <p id="user-name">Nombre Apellido</p>
+            <p id="user-name">{{ `${movie_review.user_first_name} ${movie_review.user_last_name}` }}</p>
             <p id="review-date">{{ movie_review.created_at.slice(0, 10)}}</p>
           </div>
           <br>
@@ -131,6 +131,7 @@ export default {
       method: "GET"
     }).then((response) => {
       this.reviews = response.data;
+      console.log(this.reviews);
     });
   },
   methods: {
