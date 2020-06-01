@@ -5,6 +5,7 @@ import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
 import Movie from "./views/Movie.vue";
+import Profile from "./views/Profile.vue";
 import Secure from "./components/Secure.vue";
 
 Vue.use(Router);
@@ -30,6 +31,11 @@ let router = new Router({
       path: "/movie/:id",
       name: "movie",
       component: Movie
+    },
+    {
+      path: "/user/:id",
+      name: "profile",
+      component: Profile
     },
     {
       path: "/secure",

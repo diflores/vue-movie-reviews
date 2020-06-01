@@ -62,7 +62,9 @@
       <v-row>
         <v-col cols="12" sm="6" v-for="movie_review in reviews" :key="movie_review.id">
           <div id="display-in-row">
-            <p id="user-name">{{ `${movie_review.user_first_name} ${movie_review.user_last_name}` }}</p>
+            <p id="user-name" @click="() => { redirect_profile(movie_review.user_id) }">
+              {{ `${movie_review.user_first_name} ${movie_review.user_last_name}` }}
+            </p>
             <p id="review-date">{{ movie_review.created_at.slice(0, 10)}}</p>
           </div>
           <br>
@@ -152,6 +154,9 @@ export default {
           this.score = 5;
         });
     },
+    redirect_profile: function (user_id) {
+      this.$router.push(`/user/${user_id}`).catch(() => null);
+    },
   },
 };
 </script>
@@ -206,7 +211,8 @@ export default {
 #user-name {
   font-weight: 400;
   color: var(--secondary-color);
-  padding-right: 2em;
+  margin-right: 2em;
+  cursor: pointer;
 }
 #review-date {
   color: grey;
