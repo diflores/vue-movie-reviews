@@ -46,7 +46,10 @@ export default {
   computed: {
     isLoggedIn: function() {
       return this.$store.getters.isLoggedIn;
-    }
+    },
+    loggedUserId: function() {
+      return this.$store.getters.loggedUserId;
+    },
   },
   methods: {
     logout: function() {
@@ -58,8 +61,7 @@ export default {
       this.$router.push("/").catch(() => null);
     },
     redirect_profile: function () {
-      // this.$router.push("/profile");
-      console.log('al perfil');
+      this.$router.push(`/profile/${this.loggedUserId}`).catch(() => null);
     },
     redirect_register: function () {
       this.$router.push("/register").catch(() => null);
