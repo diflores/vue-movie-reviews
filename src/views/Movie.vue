@@ -9,19 +9,14 @@
               <v-img :src="movie.image" height="300px"></v-img>
               <div>
                 <p>{{ movie.overview }}</p>
-                <br>
                 <p>Duration: {{ movie.parsed_duration }}</p>
                 <p>Date: {{ movie.release_date }}</p>
                 <p>Language: {{ movie.parsed_original_language }}</p>
-                <br>
                 <p id="bolder">Cast: {{ movie.actors }}</p>
                 <p id="bolder">Director: {{ movie.director }}</p>
                 <p id="bolder">Average score: {{ movie.vote_average }}/10</p>
-                <br>
                 <v-chip-group column>
-                  <v-chip v-for="genre in movie.genres" :key="genre.id">
-                    {{ genre.name }}
-                  </v-chip>
+                  <v-chip v-for="genre in movie.genres" :key="genre.id">{{ genre.name }}</v-chip>
                 </v-chip-group>
               </div>
             </div>
@@ -30,21 +25,11 @@
         <v-col cols="12" sm="5">
           <div id="review-container">
             <h1 id="add-review-title">Add your review</h1>
-            <v-textarea
-              outlined
-              color="#b08adc"
-              v-model="review"
-            ></v-textarea>
+            <v-textarea outlined color="#b08adc" v-model="review"></v-textarea>
             <div>
               <div id="display-in-row">
                 <h3 id="score-title">Score:</h3>
-                <v-select
-                  outlined
-                  :items="scores"
-                  color="#b08adc"
-                  :value="5"
-                  v-model="score"
-                ></v-select>
+                <v-select outlined :items="scores" color="#b08adc" :value="5" v-model="score"></v-select>
               </div>
               <v-btn
                 elevation="0"
@@ -62,12 +47,12 @@
       <v-row>
         <v-col cols="12" sm="6" v-for="movie_review in reviews" :key="movie_review.id">
           <div id="display-in-row">
-            <p id="user-name" @click="() => { redirect_profile(movie_review.user_id) }">
-              {{ `${movie_review.user_first_name} ${movie_review.user_last_name}` }}
-            </p>
+            <p
+              id="user-name"
+              @click="() => { redirect_profile(movie_review.user_id) }"
+            >{{ `${movie_review.user.first_name} ${movie_review.user.last_name}` }}</p>
             <p id="review-date">{{ movie_review.created_at.slice(0, 10)}}</p>
           </div>
-          <br>
           <p>{{ movie_review.review }}</p>
           <p id="bolder">Score: {{ movie_review.rating }}/10</p>
         </v-col>
@@ -83,7 +68,7 @@ export default {
     },
     movieId: function() {
       return this.$route.params.id;
-    },
+    }
   },
   data() {
     return {
@@ -91,7 +76,7 @@ export default {
       score: 5,
       is_loading: true,
       is_loading_submit: false,
-      scores: [1, 2 ,3, 4, 5, 6, 7, 8, 9, 10],
+      scores: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       movie: {
         title: "",
         overview: "",
@@ -99,9 +84,9 @@ export default {
         director: "",
         actors: "",
         vote_average: "",
-        parsed_duration: "",
+        parsed_duration: ""
       },
-      reviews: [],
+      reviews: []
     };
   },
   created() {
@@ -109,55 +94,59 @@ export default {
     this.$http({
       url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}`,
       method: "GET"
-    }).then((response) => {
+    }).then(response => {
       const movie = response.data;
       movie["image"] = `${posterBaseURL}${movie.poster_path}`;
-      const hours = (movie.runtime / 60);
+      const hours = movie.runtime / 60;
       const rhours = Math.floor(hours);
       const minutes = (hours - rhours) * 60;
       const rminutes = Math.round(minutes);
       movie["parsed_duration"] = `${rhours}h ${rminutes}m`;
-      movie["parsed_original_language"] = movie.spoken_languages
-        .find((language) => language.iso_639_1 === movie.original_language)
-        .name;
+      movie["parsed_original_language"] = movie.spoken_languages.find(
+        language => language.iso_639_1 === movie.original_language
+      ).name;
       this.movie = movie;
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}/credits`,
         method: "GET"
-      }).then((response) => {
+      }).then(response => {
         const credits = response.data;
-        this.movie["actors"] = credits.cast.slice(0, 5).map((actor) => actor.name).join(", ");
-        this.movie["director"] = credits.crew.find((person) => person.job === "Director").name;
+        this.movie["actors"] = credits.cast
+          .slice(0, 5)
+          .map(actor => actor.name)
+          .join(", ");
+        this.movie["director"] = credits.crew.find(
+          person => person.job === "Director"
+        ).name;
         this.is_loading = false;
       });
     });
     this.$http({
       url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}/reviews`,
       method: "GET"
-    }).then((response) => {
+    }).then(response => {
       this.reviews = response.data;
     });
   },
   methods: {
-    submit_review: function () {
+    submit_review: function() {
       this.is_loading_submit = true;
       let data = {
         review: this.review,
         rating: this.score,
-        movie_id: this.movieId,
+        movie_id: this.movieId
       };
-      this.$store
-        .dispatch("create_review", data)
-        .then(() => {
-          this.is_loading_submit = false;
-          this.review = "";
-          this.score = 5;
-        });
+      this.$store.dispatch("create_review", data).then(() => {
+        this.is_loading_submit = false;
+        this.review = "";
+        this.score = 5;
+        location.reload(); // To-do: don't reload the whole page
+      });
     },
-    redirect_profile: function (user_id) {
+    redirect_profile: function(user_id) {
       this.$router.push(`/user/${user_id}`).catch(() => null);
-    },
-  },
+    }
+  }
 };
 </script>
 <style>
