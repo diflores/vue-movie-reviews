@@ -61,7 +61,7 @@ export default {
       this.$router.push("/").catch(() => null);
     },
     redirect_profile: function () {
-      this.$router.push(`/profile/${this.loggedUserId}`).catch(() => null);
+      this.$router.push(`/user/${this.loggedUserId}`).catch(() => null);
     },
     redirect_register: function () {
       this.$router.push("/register").catch(() => null);
