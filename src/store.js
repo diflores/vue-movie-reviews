@@ -42,11 +42,21 @@ export default new Vuex.Store({
         })
           .then(resp => {
             const token = resp.data.token;
-            const user = resp.data.user;
-            localStorage.setItem("token", token);
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            commit("auth_success", token, user);
-            resolve(resp);
+            // get current user to save it in state
+            axios({
+              url: `${process.env.VUE_APP_API_BASE_URL}/users/me`,
+              method: "GET"
+            }).then((response) => {
+              const loggedUser = response.data;
+              localStorage.setItem("token", token);
+              commit("auth_success", token, loggedUser);
+              resolve(resp);
+            }).catch((error) => {
+              commit("auth_error");
+              localStorage.removeItem("token");
+              reject(error);
+            });
           })
           .catch(err => {
             commit("auth_error");
@@ -64,16 +74,10 @@ export default new Vuex.Store({
           method: "POST"
         })
           .then(resp => {
-            const token = resp.data.token;
-            const user = resp.data.user;
-            localStorage.setItem("token", token);
-            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            commit("auth_success", token, user);
             resolve(resp);
           })
           .catch(err => {
             commit("auth_error", err);
-            localStorage.removeItem("token");
             reject(err);
           });
       });
@@ -105,5 +109,6 @@ export default new Vuex.Store({
   getters : {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
+    loggedUSer: state => state.user,
   }
 });
