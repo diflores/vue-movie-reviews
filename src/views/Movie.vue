@@ -12,7 +12,7 @@
                 <br>
                 <p>Duration: {{ movie.parsed_duration }}</p>
                 <p>Date: {{ movie.release_date }}</p>
-                <p>Language: {{ movie.spoken_languages[0].name }}</p>
+                <p>Language: {{ movie.parsed_original_language }}</p>
                 <br>
                 <p id="bolder">Cast: {{ movie.actors }}</p>
                 <p id="bolder">Director: {{ movie.director }}</p>
@@ -115,6 +115,9 @@ export default {
       const minutes = (hours - rhours) * 60;
       const rminutes = Math.round(minutes);
       movie["parsed_duration"] = `${rhours}h ${rminutes}m`;
+      movie["parsed_original_language"] = movie.spoken_languages
+        .find((language) => language.iso_639_1 === movie.original_language)
+        .name;
       this.movie = movie;
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/movies/${this.movieId}/credits`,
@@ -131,7 +134,6 @@ export default {
       method: "GET"
     }).then((response) => {
       this.reviews = response.data;
-      console.log(this.reviews);
     });
   },
   methods: {
