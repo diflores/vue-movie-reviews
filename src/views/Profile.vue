@@ -53,7 +53,6 @@ export default {
           method: "GET"
         }).then(resp => {
           this.reviews = resp.data;
-          console.log(this.reviews);
           this.is_loading = false;
         });
       })

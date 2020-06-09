@@ -53,7 +53,6 @@ export default new Vuex.Store({
                 const userId = response.data.id;
                 localStorage.setItem("token", token);
                 localStorage.setItem("userId", userId);
-                console.log(userId);
                 commit("auth_success", [token, userId]);
                 resolve(resp);
               })
