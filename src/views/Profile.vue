@@ -1,20 +1,18 @@
 <template>
   <div id="profile-container" v-if="isLoggedIn && !is_loading">
+    <h1 id="movie-title">{{this.fullName}}</h1>
+    <br>
+    <p v-if="!reviews.length">No reviews to show</p>
     <div v-if="reviews.length">
-      <h1>{{this.fullName}}</h1>
       <h2 id="reviews-title">{{ `Reviews (${reviews.length})` }}</h2>
       <v-row>
         <v-col cols="12" sm="6" v-for="movie_review in reviews" :key="movie_review.id">
           <div id="display-in-row">
-            <p id="review-date">{{ movie_review.created_at.slice(0, 10)}}</p>
-          </div>
-          <div>
-            <h3>
-              <a
-                class="movie-anchor"
+              <p
+                id="user-name"
                 @click="redirect_movie(movie_review.movie_id)"
-              >{{movie_review.movie_name}}</a>
-            </h3>
+              >{{movie_review.movie_name}}</p>
+            <p id="review-date">{{ movie_review.created_at.slice(0, 10)}}</p>
           </div>
           <p>{{ movie_review.review }}</p>
           <p id="bolder">Score: {{ movie_review.rating }}/10</p>
