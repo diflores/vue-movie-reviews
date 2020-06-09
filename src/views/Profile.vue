@@ -1,7 +1,7 @@
 <template>
   <div id="profile-container" v-if="isLoggedIn && !is_loading">
     <h1 id="movie-title">{{this.fullName}}</h1>
-    <br>
+    <br v-if="!reviews.length">
     <p v-if="!reviews.length">No reviews to show</p>
     <div v-if="reviews.length">
       <h2 id="reviews-title">{{ `Reviews (${reviews.length})` }}</h2>

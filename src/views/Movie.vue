@@ -49,7 +49,7 @@
           <div id="display-in-row">
             <p
               id="user-name"
-              @click="() => { redirect_profile(movie_review.user_id) }"
+              @click="() => { redirect_profile(movie_review.user.id) }"
             >{{ `${movie_review.user.first_name} ${movie_review.user.last_name}` }}</p>
             <p id="review-date">{{ movie_review.created_at.slice(0, 10)}}</p>
           </div>
