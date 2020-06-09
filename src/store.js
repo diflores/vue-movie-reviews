@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import qs from 'qs';
+import qs from "qs";
 
 Vue.use(Vuex);
 
@@ -9,16 +9,16 @@ export default new Vuex.Store({
   state: {
     status: "",
     token: localStorage.getItem("token") || "",
-    user: {}
+    userId: localStorage.getItem("userId") || ""
   },
   mutations: {
     auth_request(state) {
       state.status = "loading";
     },
-    auth_success(state, token, user) {
+    auth_success(state, [token, userId]) {
       state.status = "success";
       state.token = token;
-      state.user = user;
+      state.userId = userId;
     },
     auth_error(state) {
       state.status = "error";
@@ -26,6 +26,7 @@ export default new Vuex.Store({
     logout(state) {
       state.status = "";
       state.token = "";
+      state.userId = "";
     }
   },
   actions: {
@@ -36,21 +37,36 @@ export default new Vuex.Store({
           url: `${process.env.VUE_APP_API_BASE_URL}/users/login/jwt`,
           data: qs.stringify(user),
           headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            "content-type": "application/x-www-form-urlencoded;charset=utf-8"
           },
           method: "POST"
         })
           .then(resp => {
             const token = resp.data.token;
-            const user = resp.data.user;
-            localStorage.setItem("token", token);
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            commit("auth_success", token, user);
-            resolve(resp);
+            // get current user to save it in state
+            axios({
+              url: `${process.env.VUE_APP_API_BASE_URL}/users/me`,
+              method: "GET"
+            })
+              .then(response => {
+                const userId = response.data.id;
+                localStorage.setItem("token", token);
+                localStorage.setItem("userId", userId);
+                commit("auth_success", [token, userId]);
+                resolve(resp);
+              })
+              .catch(error => {
+                commit("auth_error");
+                localStorage.removeItem("token");
+                localStorage.removeItem("userId");
+                reject(error);
+              });
           })
           .catch(err => {
             commit("auth_error");
             localStorage.removeItem("token");
+            localStorage.removeItem("userId");
             reject(err);
           });
       });
@@ -64,16 +80,10 @@ export default new Vuex.Store({
           method: "POST"
         })
           .then(resp => {
-            const token = resp.data.token;
-            const user = resp.data.user;
-            localStorage.setItem("token", token);
-            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            commit("auth_success", token, user);
             resolve(resp);
           })
           .catch(err => {
             commit("auth_error", err);
-            localStorage.removeItem("token");
             reject(err);
           });
       });
@@ -94,16 +104,18 @@ export default new Vuex.Store({
       });
     },
     logout({ commit }) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         commit("logout");
         localStorage.removeItem("token");
+        localStorage.removeItem("userId");
         delete axios.defaults.headers.common["Authorization"];
         resolve();
       });
     }
   },
-  getters : {
+  getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
+    loggedUserId: state => state.userId
   }
 });
