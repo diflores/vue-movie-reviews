@@ -1,16 +1,33 @@
 <template>
   <section v-if="isLoggedIn" id="search-section">
     <div id="search-container">
-      <v-text-field
-        single-line
-        outlined
-        color="#b08adc"
-        v-model="movie"
-        placeholder="Search a movie"
-        type="search"
-        @click:append="search"
-        append-icon="mdi-magnify"
-      ></v-text-field>
+      <div id="search-bar">
+        <v-text-field
+          single-line
+          outlined
+          color="#b08adc"
+          v-model="movie"
+          placeholder="Search a movie"
+          type="search"
+          @click:append="search"
+          append-icon="mdi-magnify"
+        ></v-text-field>
+      </div>
+      <div id="genres-bar">
+        <v-autocomplete
+          v-model="selected"
+          :items="['Trevor Handsen', 'Alex Nelson']"
+          chips
+          label="Genres"
+          full-width
+          hide-details
+          hide-no-data
+          hide-selected
+          multiple
+          single-line
+          color="#b08adc"
+        ></v-autocomplete>
+      </div>
     </div>
     <div v-if="!results.length">
       <h1 id="results-title">Today's featured movies</h1>
@@ -76,6 +93,7 @@ export default {
   data() {
     return {
       movie: "",
+      genres: [],
       results: [],
       best_movies_2019: [],
       most_popular_movies: [],
@@ -132,10 +150,17 @@ export default {
   flex-direction: column;
   width: 100%;
 }
-#search-container{
+#search-container {
   display: flex;
   flex-direction: row;
-  width: 24em;
+}
+#search-bar {
+  width: 22em;
+  margin-right: 4em;
+}
+#genres-bar {
+  width: 20em;
+  margin-top: -1em;
 }
 #discover-title {
   font-weight: 400;
