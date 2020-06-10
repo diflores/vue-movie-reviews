@@ -15,8 +15,8 @@
       </div>
       <div id="genres-bar">
         <v-autocomplete
-          v-model="selected"
-          :items="['Trevor Handsen', 'Alex Nelson']"
+          v-model="genre"
+          :items="genres"
           chips
           label="Genres"
           full-width
@@ -93,6 +93,7 @@ export default {
   data() {
     return {
       movie: "",
+      genre: "",
       genres: [],
       results: [],
       best_movies_2019: [],
@@ -124,6 +125,13 @@ export default {
         method: "GET"
       }).then((response) => {
         this.best_movies_2019 = parseResults(response);
+      });
+
+      this.$http({
+        url: `${process.env.VUE_APP_API_BASE_URL}/genres`,
+        method: "GET"
+      }).then((response) => {
+        this.genres = response.data.genres.map((genre) => ({ text: genre.name, value: genre.id }));
       });
     }
   },
