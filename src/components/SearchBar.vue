@@ -15,17 +15,20 @@
       </div>
       <div id="genres-bar">
         <v-autocomplete
-          v-model="genre"
+          v-model="genresToSearch"
           :items="genres"
           chips
-          label="Genres"
+          label="Search a genre"
           full-width
           hide-details
           hide-no-data
           hide-selected
           multiple
           single-line
+          deletable-chips
           color="#b08adc"
+          prepend-inner-icon="mdi-magnify"
+          @click:prepend-inner="searchGenres"
         ></v-autocomplete>
       </div>
     </div>
@@ -93,8 +96,8 @@ export default {
   data() {
     return {
       movie: "",
-      genre: "",
       genres: [],
+      genresToSearch: [],
       results: [],
       best_movies_2019: [],
       most_popular_movies: [],
@@ -138,6 +141,7 @@ export default {
   methods: {
     search: function() {
       const movieTitle = this.movie;
+      this.genresToSearch = [];
       this.$http({
         url: `${process.env.VUE_APP_API_BASE_URL}/search-movie`,
         params: { movie_title: movieTitle },
@@ -148,6 +152,15 @@ export default {
     },
     redirect_movie: function (movie_id) {
       this.$router.push(`/movie/${movie_id}`).catch(() => null);
+    },
+    searchGenres: function () {
+      this.$http({
+        url: `${process.env.VUE_APP_API_BASE_URL}/discover-movie`,
+        params: { with_genres: this.genresToSearch.join(','), sort_by: "popularity.desc" },
+        method: "GET"
+      }).then((response) => {
+        this.results = parseResults(response);
+      });
     },
   }
 };
